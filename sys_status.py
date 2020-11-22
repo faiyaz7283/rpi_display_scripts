@@ -69,13 +69,16 @@ while True:
         MemUsage = subprocess.check_output(cmd, shell=True).decode("utf-8")
         cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''
         Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
+        cmd = 'printf "CPU Temp: %.3f C" $(echo "$(</sys/class/thermal/thermal_zone0/temp)/1000" | bc -l)'
+        Temp = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
         # Write four lines of text.
 
         draw.text((x, top + 0), "IP: " + IP, font=font, fill=255)
         draw.text((x, top + 8), CPU, font=font, fill=255)
         draw.text((x, top + 16), MemUsage, font=font, fill=255)
-        draw.text((x, top + 25), Disk, font=font, fill=255)
+        draw.text((x, top + 24), Disk, font=font, fill=255)
+        draw.text((x, top + 32), Temp, font=font, fill=255)
 
         # Display image.
         disp.image(image)
